@@ -1,8 +1,5 @@
 import Course from './components/Course'
 
-const Header = ({ course }) => <h1>{course}</h1>
-
-const Total = ({ sum }) => <b>Total of {sum} exercises</b>
 const Content = ({ courses }) => 
   <>
   {courses.map(i => <Course course={i} key={i.id}/>)}
