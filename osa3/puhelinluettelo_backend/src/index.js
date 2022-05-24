@@ -56,13 +56,8 @@ app.get('/info', (req, res) => {
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id);
-    if (database.find(p => p.id === id)) {
-      database = database.filter(p => p.id !== id);
-      res.status(204).end();
-    }
-    else {
-      res.status(404).end();
-    }
+    database = database.filter(p => p.id !== id);
+    res.status(204).end();
 });
 
 app.post('/api/persons', (req, res) => {
