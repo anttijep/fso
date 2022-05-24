@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 
-const domain = 'http://localhost:3001/api/persons';
+const domain = 'api/persons';
 
 const getAll = () => {
     return axios.get(domain).then(r => r.data);

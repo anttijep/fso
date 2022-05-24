@@ -2,11 +2,13 @@
   "name": "puhelinluettelo_backend",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf build && cd ../puhelinluettelo_frontend/ && npm run build && cp -r build ../puhelinluettelo_backend/",
+    "deploy": "npm run build && npm start"
   },
   "author": "",
   "license": "ISC",
