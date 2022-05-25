@@ -103,7 +103,6 @@ const App = () => {
       setNewName('');
       setNewNumber('');
     }).catch(exp => {
-      console.log(exp);
         setMessage({msg:`${exp.response.data.error}`, type:'error'});
     });
   }
