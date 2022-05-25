@@ -103,7 +103,8 @@ const App = () => {
       setNewName('');
       setNewNumber('');
     }).catch(exp => {
-        setMessage({msg:`failed to add ${p.name}`, type:'error'});
+      console.log(exp);
+        setMessage({msg:`${exp.response.data.error}`, type:'error'});
     });
   }
 

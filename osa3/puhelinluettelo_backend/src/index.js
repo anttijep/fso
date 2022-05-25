@@ -1,5 +1,7 @@
+require("dotenv").config();
 const express = require('express');
 const app = express();
+const Person = require("./models/person");
 
 const cors = require('cors');
 app.use(cors());
@@ -9,10 +11,12 @@ app.use(express.static("build"));
 app.use(express.json());
 
 var morgan = require("morgan");
+const person = require("./models/person");
+const { response } = require("express");
 morgan.token("data", (req, res) => {return JSON.stringify(req.body)});
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'));
 
-let database = [
+/*let database = [
     {
       "name": "Arto Hellas",
       "number": "040-123456",
@@ -34,12 +38,17 @@ let database = [
       "id": 4
     }
 ];
+*/
 
-app.get('/api/persons', (req, res) => {
-    res.json(database);
+app.get('/api/persons', (req, res, next) => {
+    Person.find({}).then(d => res.json(d)).catch(e => next(e));
 });
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
+  Person.findById(req.params.id)
+    .then(d => res.json(d))
+    .catch(e => next(e));
+  /*
     const id = Number(req.params.id);
     const person = database.find(p => p.id === id);
     if (person) {
@@ -48,13 +57,27 @@ app.get('/api/persons/:id', (req, res) => {
     else {
         res.status(404).end();
     }
+    */
 });
 
-app.get('/info', (req, res) => {
-    res.send(`<p>Phonebook has info for ${database.length} people<br/><br/> ${String(new Date())}</p>`);
+app.get('/info', (req, res, next) => {
+    Person.countDocuments({})
+      .then(r => {
+        res.send(`<p>Phonebook has info for ${r} people<br/><br/> ${String(new Date())}</p>`);
+      }).catch(e => next(e));
 });
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
+    Person.findByIdAndDelete(req.params.id)
+      .then(d => {
+        if (d) {
+          res.status(204).end()
+        }
+        else {
+          res.status(404).end();
+        }
+      }).catch(e => next(e));
+  /*
     const id = Number(req.params.id);
     if (database.find(p => p.id === id)) {
       database = database.filter(p => p.id !== id);
@@ -63,14 +86,20 @@ app.delete('/api/persons/:id', (req, res) => {
     else {
       res.status(404).end();
     }
+    */
 });
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const person = req.body;
     if (!person || !person.name || !person.number) {
         res.status(400).json({ error: "invalid data"});
         return;
     }
+    const dbperson = new Person({name:person.name, number:person.number});
+    dbperson.save()
+      .then(p => res.json(p))
+      .catch(e => next(e));
+    /*
     if (database.find(p => p.name.toUpperCase() === person.name.toUpperCase())) {
         res.status(400).json({error: "name must be unique"});
         return;
@@ -79,7 +108,38 @@ app.post('/api/persons', (req, res) => {
     const nperson = {...person, id:id};
     database.push(nperson);
     res.json(nperson);
+    */
 });
+
+app.put("/api/persons/:id", (req, res, next) => {
+    const person = req.body;
+    if (!person || !person.name || !person.number) {
+        res.status(400).json({ error: "invalid data"});
+        return;
+    }
+    const nperson = {name:person.name, number:person.number};
+    Person.findByIdAndUpdate(req.params.id, nperson, {new:true, runValidators:true, context:"query"})
+      .then(d => res.json(d))
+      .catch(e => next(e));
+});
+
+const unknownEntrypoint = (req, res) => {
+  res.status(404).send({error:"unknown entrypoint"});
+};
+
+app.use(unknownEntrypoint);
+
+const errorHandler = (err, req, res, next) => {
+  console.error(err);
+  if (err.name === "CastError") {
+    return res.status(400).send({error: "invalid id"});
+  }
+  if (err.name === "ValidationError") {
+    return res.status(400).send({error: err.message});
+  }
+  next(err);
+};
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 
