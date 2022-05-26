@@ -5,7 +5,7 @@ const dummy = () => {
 const totalLikes = blogs => blogs.reduce((p, n) => p + n.likes, 0);
 
 const favoriteBlog = blogs => {
-  if (blogs.length == 0) return {};
+  if (blogs.length === 0) return {};
   return blogs.reduce((p, n) => p.likes < n.likes ? n : p);
 };
 
@@ -16,13 +16,13 @@ const parseblogs = (blogs, f) => {
 };
 
 const mostBlogs = blogs => {
-  if (blogs.length == 0) return {};
+  if (blogs.length === 0) return {};
   const [author, numblogs] = parseblogs(blogs, prev => prev ? prev + 1 : 1);
   return {author, blogs:numblogs};
 };
 
 const mostLikes = blogs => {
-  if (blogs.length == 0) return {};
+  if (blogs.length === 0) return {};
   const [author, likes] = parseblogs(blogs, (prev, next) => prev ? prev + next: next);
   return {author, likes};
 };
