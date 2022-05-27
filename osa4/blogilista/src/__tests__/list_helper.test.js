@@ -77,7 +77,6 @@ const listWithTwoBlogs = [
     likes: 12,
     __v: 0
   }
-
 ];
 
 test("dummy returns one", () => {
