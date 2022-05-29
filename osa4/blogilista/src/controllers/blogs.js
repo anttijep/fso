@@ -35,7 +35,8 @@ blogsRouter.delete("/:id", async (req, resp) => {
 });
 
 blogsRouter.put("/:id", async (req, resp) => {
-  const updblog = await Blog.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators: true, context:"query"}).updblog.populate("user", {username:1, name:1, id:1});
+  const updblog = await Blog.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators: true, context:"query"});
+  await updblog.populate("user", {username:1, name:1, id:1});
   resp.json(updblog);
 });
 
