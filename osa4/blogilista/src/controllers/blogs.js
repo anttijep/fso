@@ -35,16 +35,6 @@ blogsRouter.delete("/:id", async (req, resp) => {
 });
 
 blogsRouter.put("/:id", async (req, resp) => {
-  if (!req.user) {
-    return resp.status(401).json({error: "token missing or invalid"});
-  }
-  const blog = await Blog.findById(req.params.id);
-  if (!blog) {
-    return resp.status(404).end();
-  }
-  if (blog.user.toString() !== req.user._id.toString()) {
-    return resp.status(401).json({error: "token missing or invalid"});
-  }
   const updblog = await Blog.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators: true, context:"query"});
   await updblog.populate("user", {username:1, name:1, id:1});
   resp.json(updblog);
