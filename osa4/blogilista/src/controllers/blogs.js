@@ -29,7 +29,7 @@ blogsRouter.delete("/:id", async (req, resp) => {
     return resp.status(401).json({error: "token missing or invalid"});
   }
   await Blog.findByIdAndDelete(req.params.id);
-  req.user.blogs = req.user.blogs.filter(b => b.id !== req.params.id);
+  req.user.blogs = req.user.blogs.filter(b => b._id.toString() !== req.params.id);
   req.user.save();
   resp.status(204).end();
 });
