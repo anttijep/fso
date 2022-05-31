@@ -7,10 +7,7 @@
 
 # testing
 /coverage
-<<<<<<< HEAD
 /cypress
-=======
->>>>>>> 9990c2d4fd28a36c2c2653c31223ebb0c22c690f
 
 # production
 
@@ -24,8 +21,4 @@
 
 npm-debug.log*
 yarn-debug.log*
-<<<<<<< HEAD
 yarn-error.log*
-=======
-yarn-error.log*
->>>>>>> 9990c2d4fd28a36c2c2653c31223ebb0c22c690f
