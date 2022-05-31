@@ -12,6 +12,10 @@ beforeEach(async () => {
   await initblogs();
 });
 
+afterAll(async () => {
+  mongoose.connection.close();
+});
+
 
 describe("/api/blogs GET", () => {
   test("/api/blogs GET", async () => {
@@ -84,9 +88,5 @@ describe("/api/blogs/[id] PUT", () => {
     edited.author = "edited";
     expect(blogsafter.body).toContainEqual(edited);
   });
-});
-
-afterAll(() => {
-  mongoose.connection.close();
 });
 

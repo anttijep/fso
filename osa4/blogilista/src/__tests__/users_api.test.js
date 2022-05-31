@@ -4,11 +4,15 @@ const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 
-const {testusers, initusers} = require("../utils/test_helper");
+const {testusers, initusers, initblogs} = require("../utils/test_helper");
 
 
 beforeEach(async () => {
   await initusers();
+});
+
+afterAll(async () => {
+  mongoose.connection.close()
 });
 
 describe("create user test", () => {
@@ -70,7 +74,5 @@ describe("create user test", () => {
   });
 }); 
 
-
-afterAll(() => mongoose.connection.close());
 
 
