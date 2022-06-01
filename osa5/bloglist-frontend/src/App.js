@@ -5,10 +5,11 @@ import Toggleable from "./components/Toggleable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
-const Message = (props) => {
-  if (props.msg) {
+const Message = ({msg, style}) => {
+  style = style || {color:"green"};
+  if (msg) {
     return (
-      <p>{props.msg}</p>
+      <p id="message" style={style}>{msg}</p>
     );
   }
   return <></>;
@@ -141,11 +142,12 @@ const App = () => {
   return (
     <div>
       <h1>Login</h1>
-      <Message msg={message}/>
+      <Message msg={message} style={{color:"red"}}/>
       <form onSubmit={handleLogin}>
         <div>
           username
           <input
+            id="username"
             type="text"
             value={username}
             name="Username"
@@ -155,13 +157,14 @@ const App = () => {
         <div>
           password
           <input
+            id="password"
             type="password"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button id="loginbutton" type="submit">login</button>
       </form>
     </div>
   );

@@ -20,17 +20,17 @@ const Blog = ({ blog, onLike, onDelete, isDeletable }) => {
       </p>
     );
   };
-  const deletebutton = (blog) => <button onClick={() => onDelete(blog)}>remove</button>;
+  const deletebutton = (blog) => <button id={blog.id + "remove"} onClick={() => onDelete(blog)}>remove</button>;
 
 
   const all = () => {
     return (
-      <div>
+      <div className="blogs">
         <div>
           <label htmlFor={blog.id + "hide"}>{blog.title} {blog.author}</label> <button id={blog.id + "hide"} onClick={toggle}>hide</button>
         </div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes} <button onClick={() => onLike(blog)}>like</button></div>
+        <div>likes {blog.likes} <button id={blog.id + "like"} onClick={() => onLike(blog)}>like</button></div>
         <div>{blog.user.name}</div>
         <div>{isDeletable && deletebutton(blog)}</div>
       </div>
