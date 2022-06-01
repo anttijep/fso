@@ -18,7 +18,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/blogs", userExtractor, blogsRouter);
 if (process.env.NODE_ENV === "test") {
   const testRouter = require("./controllers/testrouter");
-  app.use("/api/test", testRouter);
+  app.use("/api/testing", testRouter);
 }
 app.use(errorHandler);
 
