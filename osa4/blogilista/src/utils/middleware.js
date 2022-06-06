@@ -3,10 +3,13 @@ const jwt = require("jsonwebtoken");
 
 const errorHandler = (err, req, resp, next) => {
   if (err.name === "ValidationError") {
-    return resp.status(400).json({error: err.message});
+    return resp.status(400).json({ error: err.message });
   }
   if (err.name === "JsonWebTokenError") {
-    return resp.status(401).json({error: "invalid token"});
+    return resp.status(401).json({ error: "invalid token" });
+  }
+  if (err.name === "CastError") {
+    return resp.status(400).json({ error: "invalid id" });
   }
   next(err);
 };
@@ -31,4 +34,4 @@ const userExtractor = async (req, resp, next) => {
   next();
 };
 
-module.exports = {errorHandler, tokenExtractor, userExtractor};
+module.exports = { errorHandler, tokenExtractor, userExtractor };
